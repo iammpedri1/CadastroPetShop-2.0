@@ -18,15 +18,15 @@ namespace CadastroPetShop
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(crudDONO));
             lblCpf = new Label();
-            txtCpf = new TextBox();
+            txtCpf = new MaskedTextBox();
             lblNome = new Label();
             txtNome = new TextBox();
             lblTelefone = new Label();
-            txtTelefone = new TextBox();
+            txtTelefone = new MaskedTextBox();
             lblEmail = new Label();
             txtEmail = new TextBox();
             lblEndereco = new Label();
-            txtEndereco = new TextBox();
+            txtEndereco = new MaskedTextBox();
             btnSalvar = new Button();
             btnAlterar = new Button();
             btnExcluir = new Button();
@@ -48,11 +48,11 @@ namespace CadastroPetShop
             // txtCpf
             // 
             txtCpf.Location = new Point(25, 51);
-            txtCpf.MaxLength = 14;
+            txtCpf.Mask = "000.000.000-00";
             txtCpf.Name = "txtCpf";
-            txtCpf.PlaceholderText = "000.000.000-00";
             txtCpf.Size = new Size(150, 23);
             txtCpf.TabIndex = 2;
+            txtCpf.TextMaskFormat = MaskFormat.ExcludePromptAndLiterals;
             // 
             // lblNome
             // 
@@ -86,11 +86,11 @@ namespace CadastroPetShop
             // txtTelefone
             // 
             txtTelefone.Location = new Point(485, 52);
-            txtTelefone.MaxLength = 15;
+            txtTelefone.Mask = "(00) 90000-0000";
             txtTelefone.Name = "txtTelefone";
-            txtTelefone.PlaceholderText = "(00) 00000-0000";
             txtTelefone.Size = new Size(170, 23);
             txtTelefone.TabIndex = 5;
+            txtTelefone.TextMaskFormat = MaskFormat.ExcludePromptAndLiterals;
             // 
             // lblEmail
             // 
@@ -124,11 +124,11 @@ namespace CadastroPetShop
             // txtEndereco
             // 
             txtEndereco.Location = new Point(305, 132);
-            txtEndereco.MaxLength = 9;
+            txtEndereco.Mask = "00000-000";
             txtEndereco.Name = "txtEndereco";
-            txtEndereco.PlaceholderText = "00000-000";
             txtEndereco.Size = new Size(350, 23);
             txtEndereco.TabIndex = 8;
+            txtEndereco.TextMaskFormat = MaskFormat.ExcludePromptAndLiterals;
             // 
             // btnSalvar
             // 
@@ -230,15 +230,15 @@ namespace CadastroPetShop
             PerformLayout();
         }
         private Label lblCpf;
-        private TextBox txtCpf;
+        private MaskedTextBox txtCpf;
         private Label lblNome;
         private TextBox txtNome;
         private Label lblTelefone;
-        private TextBox txtTelefone;
+        private MaskedTextBox txtTelefone;
         private Label lblEmail;
         private TextBox txtEmail;
         private Label lblEndereco;
-        private TextBox txtEndereco;
+        private MaskedTextBox txtEndereco;
         private Button btnSalvar;
         private Button btnAlterar;
         private Button btnExcluir;

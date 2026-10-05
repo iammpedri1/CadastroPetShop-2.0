@@ -182,7 +182,9 @@ namespace CadastroPetShop
             idDonoSelecionado = Convert.ToInt32(linha.Cells["ID"].Value);
             txtCpf.Text = linha.Cells["CPF"].Value?.ToString();
             txtNome.Text = linha.Cells["Nome"].Value?.ToString();
-            txtTelefone.Text = linha.Cells["Telefone"].Value?.ToString();
+            string telefone = Regex.Replace(linha.Cells["Telefone"].Value?.ToString() ?? "", "[^0-9]", "");
+            txtTelefone.Mask = telefone.Length == 10 ? "(00) 0000-0000" : "(00) 00000-0000";
+            txtTelefone.Text = telefone;
             txtEmail.Text = linha.Cells["Email"].Value?.ToString();
             txtEndereco.Text = linha.Cells["CEP"].Value?.ToString();
         }
@@ -192,6 +194,7 @@ namespace CadastroPetShop
             idDonoSelecionado = 0;
             txtCpf.Clear();
             txtNome.Clear();
+            txtTelefone.Mask = "(00) 90000-0000";
             txtTelefone.Clear();
             txtEmail.Clear();
             txtEndereco.Clear();
