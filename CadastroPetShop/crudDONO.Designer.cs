@@ -16,7 +16,7 @@ namespace CadastroPetShop
 
         private void InitializeComponent()
         {
-            lblTitulo = new Label();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(crudDONO));
             lblCpf = new Label();
             txtCpf = new TextBox();
             lblNome = new Label();
@@ -35,30 +35,20 @@ namespace CadastroPetShop
             ((System.ComponentModel.ISupportInitialize)dgvDonos).BeginInit();
             SuspendLayout();
             // 
-            // lblTitulo
-            // 
-            lblTitulo.AutoSize = true;
-            lblTitulo.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
-            lblTitulo.ForeColor = Color.FromArgb(15, 30, 60);
-            lblTitulo.Location = new Point(25, 20);
-            lblTitulo.Name = "lblTitulo";
-            lblTitulo.Size = new Size(190, 32);
-            lblTitulo.TabIndex = 0;
-            lblTitulo.Text = "CRUD de Donos";
-            // 
             // lblCpf
             // 
             lblCpf.AutoSize = true;
             lblCpf.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            lblCpf.Location = new Point(25, 75);
+            lblCpf.Location = new Point(25, 23);
             lblCpf.Name = "lblCpf";
-            lblCpf.Size = new Size(25, 15);
+            lblCpf.Size = new Size(27, 15);
             lblCpf.TabIndex = 1;
             lblCpf.Text = "CPF";
             // 
             // txtCpf
             // 
-            txtCpf.Location = new Point(25, 98);
+            txtCpf.Location = new Point(25, 51);
+            txtCpf.MaxLength = 14;
             txtCpf.Name = "txtCpf";
             txtCpf.PlaceholderText = "000.000.000-00";
             txtCpf.Size = new Size(150, 23);
@@ -68,15 +58,16 @@ namespace CadastroPetShop
             // 
             lblNome.AutoSize = true;
             lblNome.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            lblNome.Location = new Point(205, 75);
+            lblNome.Location = new Point(195, 23);
             lblNome.Name = "lblNome";
-            lblNome.Size = new Size(40, 15);
+            lblNome.Size = new Size(41, 15);
             lblNome.TabIndex = 1;
             lblNome.Text = "Nome";
             // 
             // txtNome
             // 
-            txtNome.Location = new Point(205, 98);
+            txtNome.Location = new Point(195, 51);
+            txtNome.MaxLength = 100;
             txtNome.Name = "txtNome";
             txtNome.PlaceholderText = "Nome completo";
             txtNome.Size = new Size(260, 23);
@@ -86,15 +77,16 @@ namespace CadastroPetShop
             // 
             lblTelefone.AutoSize = true;
             lblTelefone.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            lblTelefone.Location = new Point(485, 75);
+            lblTelefone.Location = new Point(485, 23);
             lblTelefone.Name = "lblTelefone";
-            lblTelefone.Size = new Size(55, 15);
+            lblTelefone.Size = new Size(56, 15);
             lblTelefone.TabIndex = 3;
             lblTelefone.Text = "Telefone";
             // 
             // txtTelefone
             // 
-            txtTelefone.Location = new Point(485, 98);
+            txtTelefone.Location = new Point(485, 52);
+            txtTelefone.MaxLength = 15;
             txtTelefone.Name = "txtTelefone";
             txtTelefone.PlaceholderText = "(00) 00000-0000";
             txtTelefone.Size = new Size(170, 23);
@@ -104,7 +96,7 @@ namespace CadastroPetShop
             // 
             lblEmail.AutoSize = true;
             lblEmail.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            lblEmail.Location = new Point(25, 140);
+            lblEmail.Location = new Point(25, 106);
             lblEmail.Name = "lblEmail";
             lblEmail.Size = new Size(36, 15);
             lblEmail.TabIndex = 5;
@@ -112,7 +104,8 @@ namespace CadastroPetShop
             // 
             // txtEmail
             // 
-            txtEmail.Location = new Point(25, 163);
+            txtEmail.Location = new Point(25, 132);
+            txtEmail.MaxLength = 254;
             txtEmail.Name = "txtEmail";
             txtEmail.PlaceholderText = "email@exemplo.com";
             txtEmail.Size = new Size(260, 23);
@@ -122,55 +115,72 @@ namespace CadastroPetShop
             // 
             lblEndereco.AutoSize = true;
             lblEndereco.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            lblEndereco.Location = new Point(305, 140);
+            lblEndereco.Location = new Point(305, 106);
             lblEndereco.Name = "lblEndereco";
-            lblEndereco.Size = new Size(61, 15);
+            lblEndereco.Size = new Size(27, 15);
             lblEndereco.TabIndex = 7;
-            lblEndereco.Text = "Endereço";
+            lblEndereco.Text = "CEP";
             // 
             // txtEndereco
             // 
-            txtEndereco.Location = new Point(305, 163);
+            txtEndereco.Location = new Point(305, 132);
+            txtEndereco.MaxLength = 9;
             txtEndereco.Name = "txtEndereco";
-            txtEndereco.PlaceholderText = "Rua, número, bairro";
+            txtEndereco.PlaceholderText = "00000-000";
             txtEndereco.Size = new Size(350, 23);
             txtEndereco.TabIndex = 8;
             // 
             // btnSalvar
             // 
-            btnSalvar.Location = new Point(25, 210);
+            btnSalvar.BackColor = Color.FromArgb(225, 238, 255);
+            btnSalvar.FlatStyle = FlatStyle.Flat;
+            btnSalvar.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            btnSalvar.ForeColor = Color.FromArgb(20, 60, 140);
+            btnSalvar.Location = new Point(23, 183);
             btnSalvar.Name = "btnSalvar";
             btnSalvar.Size = new Size(110, 35);
             btnSalvar.TabIndex = 9;
             btnSalvar.Text = "Salvar";
-            btnSalvar.UseVisualStyleBackColor = true;
+            btnSalvar.UseVisualStyleBackColor = false;
             // 
             // btnAlterar
             // 
-            btnAlterar.Location = new Point(145, 210);
+            btnAlterar.BackColor = Color.FromArgb(225, 238, 255);
+            btnAlterar.FlatStyle = FlatStyle.Flat;
+            btnAlterar.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            btnAlterar.ForeColor = Color.FromArgb(20, 60, 140);
+            btnAlterar.Location = new Point(139, 183);
             btnAlterar.Name = "btnAlterar";
             btnAlterar.Size = new Size(110, 35);
             btnAlterar.TabIndex = 10;
             btnAlterar.Text = "Alterar";
-            btnAlterar.UseVisualStyleBackColor = true;
+            btnAlterar.UseVisualStyleBackColor = false;
             // 
             // btnExcluir
             // 
-            btnExcluir.Location = new Point(265, 210);
+            btnExcluir.BackColor = Color.FromArgb(225, 238, 255);
+            btnExcluir.FlatStyle = FlatStyle.Flat;
+            btnExcluir.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            btnExcluir.ForeColor = Color.FromArgb(20, 60, 140);
+            btnExcluir.Location = new Point(254, 183);
             btnExcluir.Name = "btnExcluir";
             btnExcluir.Size = new Size(110, 35);
             btnExcluir.TabIndex = 11;
             btnExcluir.Text = "Excluir";
-            btnExcluir.UseVisualStyleBackColor = true;
+            btnExcluir.UseVisualStyleBackColor = false;
             // 
             // btnLimpar
             // 
-            btnLimpar.Location = new Point(385, 210);
+            btnLimpar.BackColor = Color.FromArgb(225, 238, 255);
+            btnLimpar.FlatStyle = FlatStyle.Flat;
+            btnLimpar.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            btnLimpar.ForeColor = Color.FromArgb(20, 60, 140);
+            btnLimpar.Location = new Point(370, 183);
             btnLimpar.Name = "btnLimpar";
             btnLimpar.Size = new Size(110, 35);
             btnLimpar.TabIndex = 12;
             btnLimpar.Text = "Limpar";
-            btnLimpar.UseVisualStyleBackColor = true;
+            btnLimpar.UseVisualStyleBackColor = false;
             // 
             // dgvDonos
             // 
@@ -178,7 +188,7 @@ namespace CadastroPetShop
             dgvDonos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvDonos.BackgroundColor = Color.White;
             dgvDonos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvDonos.Location = new Point(25, 265);
+            dgvDonos.Location = new Point(25, 234);
             dgvDonos.MultiSelect = false;
             dgvDonos.Name = "dgvDonos";
             dgvDonos.ReadOnly = true;
@@ -192,7 +202,7 @@ namespace CadastroPetShop
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(240, 244, 248);
-            ClientSize = new Size(750, 540);
+            ClientSize = new Size(750, 490);
             Controls.Add(dgvDonos);
             Controls.Add(btnLimpar);
             Controls.Add(btnExcluir);
@@ -208,18 +218,17 @@ namespace CadastroPetShop
             Controls.Add(lblNome);
             Controls.Add(txtCpf);
             Controls.Add(lblCpf);
-            Controls.Add(lblTitulo);
             FormBorderStyle = FormBorderStyle.FixedSingle;
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             Name = "crudDONO";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Pet Ville - Donos";
+            Load += crudDONO_Load;
             ((System.ComponentModel.ISupportInitialize)dgvDonos).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
-
-        private Label lblTitulo;
         private Label lblCpf;
         private TextBox txtCpf;
         private Label lblNome;

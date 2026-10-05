@@ -28,7 +28,7 @@ namespace CadastroPetShop
             {
                 using MySqlConnection conexao = new MySqlConnection(connStr);
                 using MySqlDataAdapter adaptador = new MySqlDataAdapter(
-                    "SELECT id_dono AS ID, cpf AS CPF, nome AS Nome, telefone AS Telefone, email AS Email, endereco AS Endereço FROM donos",
+                    "SELECT id_dono AS ID, cpf AS CPF, nome AS Nome, telefone AS Telefone, email AS Email, endereco AS CEP FROM donos",
                     conexao);
 
                 DataTable tabela = new DataTable();
@@ -49,6 +49,12 @@ namespace CadastroPetShop
                 return;
             }
 
+            if (string.IsNullOrWhiteSpace(txtCpf.Text) || string.IsNullOrWhiteSpace(txtNome.Text) || string.IsNullOrWhiteSpace(txtEndereco.Text))
+            {
+                MessageBox.Show("Preencha CPF, nome e CEP.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             if (!CpfValido(txtCpf.Text))
             {
                 MessageBox.Show("Informe um CPF válido.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -64,10 +70,24 @@ namespace CadastroPetShop
                 return;
             }
 
-            if (string.IsNullOrWhiteSpace(txtCpf.Text) || string.IsNullOrWhiteSpace(txtNome.Text))
+            string telefone = Regex.Replace(txtTelefone.Text, "[^0-9]", "");
+            if (!string.IsNullOrWhiteSpace(txtTelefone.Text) &&
+                (!Regex.IsMatch(txtTelefone.Text, @"^[0-9()\-\s]+$") ||
+                 (telefone.Length != 10 && telefone.Length != 11) ||
+                 int.Parse(telefone.Substring(0, 2)) < 11 ||
+                 int.Parse(telefone.Substring(0, 2)) > 99 ||
+                 (telefone.Length == 10 && (telefone[2] < '2' || telefone[2] > '5')) ||
+                 (telefone.Length == 11 && telefone[2] != '9')))
             {
-                MessageBox.Show("Informe o CPF e o nome do dono.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtCpf.Focus();
+                MessageBox.Show("Informe um telefone brasileiro com DDD e 10 ou 11 dígitos.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtTelefone.Focus();
+                return;
+            }
+
+            if (!Regex.IsMatch(txtEndereco.Text.Trim(), @"^\d{5}-?\d{3}$"))
+            {
+                MessageBox.Show("Informe um CEP com 8 dígitos.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtEndereco.Focus();
                 return;
             }
 
@@ -164,7 +184,7 @@ namespace CadastroPetShop
             txtNome.Text = linha.Cells["Nome"].Value?.ToString();
             txtTelefone.Text = linha.Cells["Telefone"].Value?.ToString();
             txtEmail.Text = linha.Cells["Email"].Value?.ToString();
-            txtEndereco.Text = linha.Cells["Endereço"].Value?.ToString();
+            txtEndereco.Text = linha.Cells["CEP"].Value?.ToString();
         }
 
         private void LimparCampos()
@@ -180,6 +200,11 @@ namespace CadastroPetShop
 
         private bool CpfValido(string cpf)
         {
+            if (!Regex.IsMatch(cpf, @"^[0-9.\-]+$"))
+            {
+                return false;
+            }
+
             string numeros = Regex.Replace(cpf, "[^0-9]", "");
 
             if (numeros.Length != 11 || new string(numeros[0], 11) == numeros)
@@ -207,6 +232,11 @@ namespace CadastroPetShop
 
             return primeiroDigito == int.Parse(numeros[9].ToString()) &&
                    segundoDigito == int.Parse(numeros[10].ToString());
+        }
+
+        private void crudDONO_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

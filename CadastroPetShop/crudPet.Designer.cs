@@ -22,7 +22,6 @@ namespace CadastroPetShop
         {
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(crudPet));
-            lblTitulo = new Label();
             pnlCard = new Panel();
             lblNome = new Label();
             txtNome = new TextBox();
@@ -66,7 +65,6 @@ namespace CadastroPetShop
             btnPesquisar = new Button();
             picFoto = new PictureBox();
             btnFoto = new Button();
-            checkBox1 = new CheckBox();
             pnlCard.SuspendLayout();
             pnlSexo.SuspendLayout();
             pnlVacina.SuspendLayout();
@@ -75,22 +73,9 @@ namespace CadastroPetShop
             ((System.ComponentModel.ISupportInitialize)picFoto).BeginInit();
             SuspendLayout();
             // 
-            // lblTitulo
-            // 
-            lblTitulo.AutoSize = true;
-            lblTitulo.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
-            lblTitulo.ForeColor = Color.FromArgb(15, 30, 60);
-            lblTitulo.Location = new Point(25, 15);
-            lblTitulo.Name = "lblTitulo";
-            lblTitulo.Size = new Size(173, 32);
-            lblTitulo.TabIndex = 0;
-            lblTitulo.Text = "CRUD de PETs";
-            lblTitulo.Click += lblTitulo_Click;
-            // 
             // pnlCard
             // 
             pnlCard.BackColor = Color.White;
-            pnlCard.Controls.Add(checkBox1);
             pnlCard.Controls.Add(lblNome);
             pnlCard.Controls.Add(txtNome);
             pnlCard.Controls.Add(lblDono);
@@ -127,9 +112,9 @@ namespace CadastroPetShop
             pnlCard.Controls.Add(btnPesquisar);
             pnlCard.Controls.Add(picFoto);
             pnlCard.Controls.Add(btnFoto);
-            pnlCard.Location = new Point(25, 55);
+            pnlCard.Location = new Point(13, 12);
             pnlCard.Name = "pnlCard";
-            pnlCard.Size = new Size(815, 500);
+            pnlCard.Size = new Size(856, 595);
             pnlCard.TabIndex = 1;
             // 
             // lblNome
@@ -189,6 +174,7 @@ namespace CadastroPetShop
             txtTelefone.Size = new Size(170, 24);
             txtTelefone.TabIndex = 5;
             txtTelefone.Text = "automático";
+            txtTelefone.TextChanged += txtTelefone_TextChanged;
             // 
             // lblEmail
             // 
@@ -353,6 +339,7 @@ namespace CadastroPetShop
             cmbEspecie.Name = "cmbEspecie";
             cmbEspecie.Size = new Size(140, 25);
             cmbEspecie.TabIndex = 17;
+            cmbEspecie.SelectedIndexChanged += cmbEspecie_SelectedIndexChanged;
             // 
             // lblCor
             // 
@@ -435,7 +422,7 @@ namespace CadastroPetShop
             // 
             lblDoencas.AutoSize = true;
             lblDoencas.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            lblDoencas.Location = new Point(605, 150);
+            lblDoencas.Location = new Point(643, 85);
             lblDoencas.Name = "lblDoencas";
             lblDoencas.Size = new Size(54, 15);
             lblDoencas.TabIndex = 24;
@@ -444,7 +431,7 @@ namespace CadastroPetShop
             // txtDoencas
             // 
             txtDoencas.Font = new Font("Segoe UI", 9.5F);
-            txtDoencas.Location = new Point(605, 172);
+            txtDoencas.Location = new Point(640, 111);
             txtDoencas.Name = "txtDoencas";
             txtDoencas.Size = new Size(160, 24);
             txtDoencas.TabIndex = 25;
@@ -463,6 +450,7 @@ namespace CadastroPetShop
             btnSalvar.TabIndex = 26;
             btnSalvar.Text = "SALVAR";
             btnSalvar.UseVisualStyleBackColor = false;
+            btnSalvar.Click += btnSalvar_Click;
             // 
             // btnAlterar
             // 
@@ -523,28 +511,28 @@ namespace CadastroPetShop
             dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
             dgvPets.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dgvPets.EnableHeadersVisualStyles = false;
-            dgvPets.Location = new Point(20, 270);
+            dgvPets.Location = new Point(42, 323);
             dgvPets.MultiSelect = false;
             dgvPets.Name = "dgvPets";
             dgvPets.ReadOnly = true;
             dgvPets.RowHeadersVisible = false;
             dgvPets.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvPets.Size = new Size(770, 210);
+            dgvPets.Size = new Size(770, 227);
             dgvPets.TabIndex = 30;
             // 
             // lblPesquisa
             // 
             lblPesquisa.AutoSize = true;
             lblPesquisa.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            lblPesquisa.Location = new Point(20, 258);
+            lblPesquisa.Location = new Point(20, 282);
             lblPesquisa.Name = "lblPesquisa";
-            lblPesquisa.Size = new Size(60, 15);
+            lblPesquisa.Size = new Size(59, 15);
             lblPesquisa.TabIndex = 31;
             lblPesquisa.Text = "Pesquisar";
             // 
             // txtPesquisa
             // 
-            txtPesquisa.Location = new Point(85, 255);
+            txtPesquisa.Location = new Point(88, 279);
             txtPesquisa.Name = "txtPesquisa";
             txtPesquisa.PlaceholderText = "PET ou dono";
             txtPesquisa.Size = new Size(220, 23);
@@ -552,7 +540,7 @@ namespace CadastroPetShop
             // 
             // btnPesquisar
             // 
-            btnPesquisar.Location = new Point(315, 254);
+            btnPesquisar.Location = new Point(320, 277);
             btnPesquisar.Name = "btnPesquisar";
             btnPesquisar.Size = new Size(90, 25);
             btnPesquisar.TabIndex = 33;
@@ -562,37 +550,26 @@ namespace CadastroPetShop
             // picFoto
             // 
             picFoto.BorderStyle = BorderStyle.FixedSingle;
-            picFoto.Location = new Point(650, 85);
+            picFoto.Location = new Point(643, 150);
             picFoto.Name = "picFoto";
-            picFoto.Size = new Size(135, 105);
+            picFoto.Size = new Size(150, 127);
             picFoto.SizeMode = PictureBoxSizeMode.Zoom;
             picFoto.TabIndex = 34;
             picFoto.TabStop = false;
             // 
             // btnFoto
             // 
-            btnFoto.Location = new Point(650, 195);
+            btnFoto.Location = new Point(657, 283);
             btnFoto.Name = "btnFoto";
-            btnFoto.Size = new Size(135, 25);
+            btnFoto.Size = new Size(123, 25);
             btnFoto.TabIndex = 35;
             btnFoto.Text = "Selecionar foto";
             btnFoto.UseVisualStyleBackColor = true;
             // 
-            // checkBox1
-            // 
-            checkBox1.AutoSize = true;
-            checkBox1.Location = new Point(683, 125);
-            checkBox1.Name = "checkBox1";
-            checkBox1.Size = new Size(82, 19);
-            checkBox1.TabIndex = 2;
-            checkBox1.Text = "checkBox1";
-            checkBox1.UseVisualStyleBackColor = true;
-            // 
             // crudPet
             // 
             BackColor = Color.FromArgb(240, 244, 248);
-            ClientSize = new Size(880, 620);
-            Controls.Add(lblTitulo);
+            ClientSize = new Size(889, 574);
             Controls.Add(pnlCard);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "crudPet";
@@ -609,12 +586,9 @@ namespace CadastroPetShop
             ((System.ComponentModel.ISupportInitialize)dgvPets).EndInit();
             ((System.ComponentModel.ISupportInitialize)picFoto).EndInit();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
-
-        private System.Windows.Forms.Label lblTitulo;
         private System.Windows.Forms.Panel pnlCard;
         private System.Windows.Forms.TextBox txtNome;
         private System.Windows.Forms.ComboBox cmbDono;
@@ -658,6 +632,5 @@ namespace CadastroPetShop
         private Label lblCastrado;
         private Panel pnlCastrado;
         private Label lblDoencas;
-        private CheckBox checkBox1;
     }
 }

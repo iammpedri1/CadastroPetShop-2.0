@@ -16,6 +16,7 @@ namespace CadastroPetShop
 
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(crudMENU));
             lblTitulo = new Label();
             lblBoasVindas = new Label();
             btnPets = new Button();
@@ -32,7 +33,7 @@ namespace CadastroPetShop
             lblTitulo.ForeColor = Color.FromArgb(15, 30, 60);
             lblTitulo.Location = new Point(35, 30);
             lblTitulo.Name = "lblTitulo";
-            lblTitulo.Size = new Size(266, 37);
+            lblTitulo.Size = new Size(210, 37);
             lblTitulo.TabIndex = 0;
             lblTitulo.Text = "Menu Principal";
             // 
@@ -42,7 +43,7 @@ namespace CadastroPetShop
             lblBoasVindas.Font = new Font("Segoe UI", 12F);
             lblBoasVindas.Location = new Point(38, 85);
             lblBoasVindas.Name = "lblBoasVindas";
-            lblBoasVindas.Size = new Size(171, 21);
+            lblBoasVindas.Size = new Size(109, 21);
             lblBoasVindas.TabIndex = 1;
             lblBoasVindas.Text = "Bem-vindo(a)!";
             // 
@@ -115,6 +116,7 @@ namespace CadastroPetShop
             Controls.Add(lblBoasVindas);
             Controls.Add(lblTitulo);
             FormBorderStyle = FormBorderStyle.FixedSingle;
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             Name = "crudMENU";
             StartPosition = FormStartPosition.CenterScreen;

@@ -24,7 +24,6 @@ namespace CadastroPetShop
             btnLimpar.Click += (s, e) => LimparCampos();
             dgvPets.CellClick += DgvPets_CellClick;
             btnPesquisar.Click += (s, e) => CarregarPets(txtPesquisa.Text.Trim());
-            txtPesquisa.TextChanged += (s, e) => CarregarPets(txtPesquisa.Text.Trim());
             btnFoto.Click += BtnFoto_Click;
 
             if (!DesignMode)
@@ -44,10 +43,17 @@ namespace CadastroPetShop
 
         private void CarregarDonos()
         {
-            cmbDono.DataSource = BuscarTabela("SELECT id_dono, nome, telefone, email FROM donos");
-            cmbDono.DisplayMember = "nome";
-            cmbDono.ValueMember = "id_dono";
-            cmbDono.SelectedIndex = -1;
+            try
+            {
+                cmbDono.DataSource = BuscarTabela("SELECT id_dono, nome, telefone, email FROM donos");
+                cmbDono.DisplayMember = "nome";
+                cmbDono.ValueMember = "id_dono";
+                cmbDono.SelectedIndex = -1;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao carregar os donos:\n{ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
         private void pnlVacina_Paint(object? sender, PaintEventArgs e)
         {
@@ -63,13 +69,20 @@ namespace CadastroPetShop
                            FROM pets p INNER JOIN donos d ON p.id_dono = d.id_dono
                            WHERE p.nome LIKE @filtro OR d.nome LIKE @filtro";
 
-            using var conexao = new MySqlConnection(connStr);
-            using var comando = new MySqlCommand(sql, conexao);
-            comando.Parameters.AddWithValue("@filtro", $"%{filtro}%");
-            using var adaptador = new MySqlDataAdapter(comando);
-            var tabela = new DataTable();
-            adaptador.Fill(tabela);
-            dgvPets.DataSource = tabela;
+            try
+            {
+                using var conexao = new MySqlConnection(connStr);
+                using var comando = new MySqlCommand(sql, conexao);
+                comando.Parameters.AddWithValue("@filtro", $"%{filtro}%");
+                using var adaptador = new MySqlDataAdapter(comando);
+                var tabela = new DataTable();
+                adaptador.Fill(tabela);
+                dgvPets.DataSource = tabela;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao carregar os PETs:\n{ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void BtnFoto_Click(object? sender, EventArgs e)
@@ -172,11 +185,17 @@ namespace CadastroPetShop
 
         private void CmbDono_SelectedIndexChanged(object? sender, EventArgs e)
         {
-            bool ok = cmbDono.SelectedItem is DataRowView drv;
-            var dr = cmbDono.SelectedItem as DataRowView;
-            txtTelefone.Text = ok ? dr["telefone"].ToString() : "automático";
-            txtEmail.Text = ok ? dr["email"].ToString() : "automático";
-            txtTelefone.ForeColor = txtEmail.ForeColor = ok ? Color.Black : Color.Gray;
+            if (cmbDono.SelectedItem is DataRowView dono)
+            {
+                txtTelefone.Text = dono["telefone"].ToString();
+                txtEmail.Text = dono["email"].ToString();
+                txtTelefone.ForeColor = txtEmail.ForeColor = Color.Black;
+            }
+            else
+            {
+                txtTelefone.Text = txtEmail.Text = "automático";
+                txtTelefone.ForeColor = txtEmail.ForeColor = Color.Gray;
+            }
         }
 
         private void LimparCampos()
@@ -201,6 +220,21 @@ namespace CadastroPetShop
             path.AddArc(w - d, h - d, d, d, 0, 90);
             path.AddArc(0, h - d, d, d, 90, 90);
             e.Graphics.DrawPath(new Pen(Color.FromArgb(215, 225, 235)), path);
+        }
+
+        private void cmbEspecie_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtTelefone_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnSalvar_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
