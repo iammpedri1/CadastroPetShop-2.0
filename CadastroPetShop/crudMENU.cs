@@ -11,6 +11,10 @@ namespace CadastroPetShop
             lblBoasVindas.Text = $"Bem-vindo(a), {usuario}!";
         }
 
+        public crudMENU()
+        {
+        }
+
         private void btnPets_Click(object? sender, EventArgs e)
         {
             using crudPet telaPets = new crudPet();

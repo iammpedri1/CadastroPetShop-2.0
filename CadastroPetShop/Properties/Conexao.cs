@@ -1,7 +1,4 @@
-using System;
 using MySql.Data.MySqlClient;
-using BCrypt.Net;
-
 namespace CadastroPetShop
 {
     public static class Autenticacao
@@ -14,12 +11,14 @@ namespace CadastroPetShop
             {
                 conexao.Open();
 
-                using (var cmd = new MySqlCommand("SELECT senha_hash FROM usuarios WHERE usuario = @usuario", conexao))
+                using (var cmd = new MySqlCommand("SELECT senha_hash FROM usuarios WHERE usuario = @usuario LIMIT 1", conexao))
                 {
-                    cmd.Parameters.AddWithValue("@usuario", usuario);
+                    cmd.Parameters.Add("@usuario", MySqlDbType.VarChar).Value = usuario;
                     var resultado = cmd.ExecuteScalar();
+                    var senhaHash = Convert.ToString(resultado)?.Trim();
 
-                    return resultado != null && BCrypt.Net.BCrypt.Verify(senha, resultado.ToString());
+                    return !string.IsNullOrWhiteSpace(senhaHash)
+                        && BCrypt.Net.BCrypt.Verify(senha, senhaHash);
                 }
             }
         }

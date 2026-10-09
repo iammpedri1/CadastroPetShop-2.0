@@ -126,7 +126,7 @@ namespace CadastroPetShop
             txtEndereco.Location = new Point(305, 132);
             txtEndereco.Mask = "00000-000";
             txtEndereco.Name = "txtEndereco";
-            txtEndereco.Size = new Size(350, 23);
+            txtEndereco.Size = new Size(76, 23);
             txtEndereco.TabIndex = 8;
             txtEndereco.TextMaskFormat = MaskFormat.ExcludePromptAndLiterals;
             // 
@@ -224,7 +224,6 @@ namespace CadastroPetShop
             Name = "crudDONO";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Pet Ville - Donos";
-            Load += crudDONO_Load;
             ((System.ComponentModel.ISupportInitialize)dgvDonos).EndInit();
             ResumeLayout(false);
             PerformLayout();

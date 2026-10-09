@@ -41,7 +41,7 @@ namespace CadastroPetShop
             // 
             lblBoasVindas.AutoSize = true;
             lblBoasVindas.Font = new Font("Segoe UI", 12F);
-            lblBoasVindas.Location = new Point(38, 85);
+            lblBoasVindas.Location = new Point(40, 85);
             lblBoasVindas.Name = "lblBoasVindas";
             lblBoasVindas.Size = new Size(109, 21);
             lblBoasVindas.TabIndex = 1;

@@ -1,6 +1,8 @@
 using System;
 using System.Data;
-using System.Text.RegularExpressions;
+using System.Net.Http;
+using System.Text.Json;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 
@@ -9,13 +11,14 @@ namespace CadastroPetShop
     public partial class crudDONO : Form
     {
         private readonly string connStr = "Server=localhost;Database=petshop_tecnico;Uid=root;Pwd=;";
+        private static readonly HttpClient httpClient = new HttpClient { Timeout = TimeSpan.FromSeconds(5) };
         private int idDonoSelecionado = 0;
 
         public crudDONO()
         {
             InitializeComponent();
-            btnSalvar.Click += (s, e) => SalvarDono(false);
-            btnAlterar.Click += (s, e) => SalvarDono(true);
+            btnSalvar.Click += async (s, e) => await SalvarDono(false);
+            btnAlterar.Click += async (s, e) => await SalvarDono(true);
             btnExcluir.Click += BtnExcluir_Click;
             btnLimpar.Click += (s, e) => LimparCampos();
             dgvDonos.CellClick += DgvDonos_CellClick;
@@ -41,7 +44,7 @@ namespace CadastroPetShop
             }
         }
 
-        private void SalvarDono(bool alteracao)
+        private async Task SalvarDono(bool alteracao)
         {
             if (alteracao && idDonoSelecionado == 0)
             {
@@ -49,47 +52,29 @@ namespace CadastroPetShop
                 return;
             }
 
-            if (string.IsNullOrWhiteSpace(txtCpf.Text) || string.IsNullOrWhiteSpace(txtNome.Text) || string.IsNullOrWhiteSpace(txtEndereco.Text))
+            if (string.IsNullOrWhiteSpace(txtNome.Text))
             {
-                MessageBox.Show("Preencha CPF, nome e CEP.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Preencha o nome.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtNome.Focus();
                 return;
             }
 
-            if (!CpfValido(txtCpf.Text))
+            if (!txtCpf.MaskCompleted)
             {
-                MessageBox.Show("Informe um CPF válido.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Preencha o CPF completo.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtCpf.Focus();
                 return;
             }
 
-            if (!string.IsNullOrWhiteSpace(txtEmail.Text) &&
-                !Regex.IsMatch(txtEmail.Text.Trim(), @"^[^\s@]+@[^\s@]+\.[^\s@]+$"))
-            {
-                MessageBox.Show("Informe um e-mail válido.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtEmail.Focus();
-                return;
-            }
-
-            string telefone = Regex.Replace(txtTelefone.Text, "[^0-9]", "");
-            if (!string.IsNullOrWhiteSpace(txtTelefone.Text) &&
-                (!Regex.IsMatch(txtTelefone.Text, @"^[0-9()\-\s]+$") ||
-                 (telefone.Length != 10 && telefone.Length != 11) ||
-                 int.Parse(telefone.Substring(0, 2)) < 11 ||
-                 int.Parse(telefone.Substring(0, 2)) > 99 ||
-                 (telefone.Length == 10 && (telefone[2] < '2' || telefone[2] > '5')) ||
-                 (telefone.Length == 11 && telefone[2] != '9')))
-            {
-                MessageBox.Show("Informe um telefone brasileiro com DDD e 10 ou 11 dígitos.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtTelefone.Focus();
-                return;
-            }
-
-            if (!Regex.IsMatch(txtEndereco.Text.Trim(), @"^\d{5}-?\d{3}$"))
+            if (!txtEndereco.MaskCompleted)
             {
                 MessageBox.Show("Informe um CEP com 8 dígitos.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtEndereco.Focus();
                 return;
             }
+
+            if (!await CepExisteAsync(txtEndereco.Text))
+                return;
 
             string sql = alteracao
                 ? "UPDATE donos SET cpf = @cpf, nome = @nome, telefone = @telefone, email = @email, endereco = @endereco WHERE id_dono = @id"
@@ -99,7 +84,6 @@ namespace CadastroPetShop
             {
                 using MySqlConnection conexao = new MySqlConnection(connStr);
                 using MySqlCommand comando = new MySqlCommand(sql, conexao);
-
                 comando.Parameters.AddWithValue("@cpf", txtCpf.Text.Trim());
                 comando.Parameters.AddWithValue("@nome", txtNome.Text.Trim());
                 comando.Parameters.AddWithValue("@telefone", txtTelefone.Text.Trim());
@@ -107,23 +91,40 @@ namespace CadastroPetShop
                 comando.Parameters.AddWithValue("@endereco", txtEndereco.Text.Trim());
 
                 if (alteracao)
-                {
                     comando.Parameters.AddWithValue("@id", idDonoSelecionado);
-                }
 
                 conexao.Open();
                 comando.ExecuteNonQuery();
-
-                MessageBox.Show(
-                    alteracao ? "Dono alterado com sucesso." : "Dono cadastrado com sucesso.",
-                    "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
+                MessageBox.Show(alteracao ? "Dono alterado com sucesso." : "Dono cadastrado com sucesso.", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 LimparCampos();
                 CarregarDonos();
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Erro ao salvar o dono:\n{ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private async Task<bool> CepExisteAsync(string cep)
+        {
+            try
+            {
+                using HttpResponseMessage resposta = await httpClient.GetAsync($"https://viacep.com.br/ws/{cep}/json/");
+                resposta.EnsureSuccessStatusCode();
+                using JsonDocument dados = JsonDocument.Parse(await resposta.Content.ReadAsStringAsync());
+                return !dados.RootElement.TryGetProperty("erro", out JsonElement erro) || !erro.GetBoolean();
+            }
+            catch (HttpRequestException)
+            {
+                return false;
+            }
+            catch (TaskCanceledException)
+            {
+                return false;
+            }
+            catch (JsonException)
+            {
+                return false;
             }
         }
 
@@ -182,7 +183,7 @@ namespace CadastroPetShop
             idDonoSelecionado = Convert.ToInt32(linha.Cells["ID"].Value);
             txtCpf.Text = linha.Cells["CPF"].Value?.ToString();
             txtNome.Text = linha.Cells["Nome"].Value?.ToString();
-            string telefone = Regex.Replace(linha.Cells["Telefone"].Value?.ToString() ?? "", "[^0-9]", "");
+            string telefone = linha.Cells["Telefone"].Value?.ToString() ?? "";
             txtTelefone.Mask = telefone.Length == 10 ? "(00) 0000-0000" : "(00) 00000-0000";
             txtTelefone.Text = telefone;
             txtEmail.Text = linha.Cells["Email"].Value?.ToString();
@@ -201,45 +202,5 @@ namespace CadastroPetShop
             txtCpf.Focus();
         }
 
-        private bool CpfValido(string cpf)
-        {
-            if (!Regex.IsMatch(cpf, @"^[0-9.\-]+$"))
-            {
-                return false;
-            }
-
-            string numeros = Regex.Replace(cpf, "[^0-9]", "");
-
-            if (numeros.Length != 11 || new string(numeros[0], 11) == numeros)
-            {
-                return false;
-            }
-
-            int soma = 0;
-            for (int i = 0; i < 9; i++)
-            {
-                soma += int.Parse(numeros[i].ToString()) * (10 - i);
-            }
-
-            int primeiroDigito = (soma * 10) % 11;
-            if (primeiroDigito == 10) primeiroDigito = 0;
-
-            soma = 0;
-            for (int i = 0; i < 10; i++)
-            {
-                soma += int.Parse(numeros[i].ToString()) * (11 - i);
-            }
-
-            int segundoDigito = (soma * 10) % 11;
-            if (segundoDigito == 10) segundoDigito = 0;
-
-            return primeiroDigito == int.Parse(numeros[9].ToString()) &&
-                   segundoDigito == int.Parse(numeros[10].ToString());
-        }
-
-        private void crudDONO_Load(object sender, EventArgs e)
-        {
-
-        }
     }
 }

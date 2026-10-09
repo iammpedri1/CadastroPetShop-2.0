@@ -1,8 +1,5 @@
 using System;
-using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Windows.Forms;
-using MySql.Data.MySqlClient;
 
 namespace CadastroPetShop
 {
@@ -34,8 +31,6 @@ namespace CadastroPetShop
         private void pictureBox4_Click(object? sender, EventArgs e)
         {
             senhaVisivel = !senhaVisivel;
-
-           
             txtSenha.UseSystemPasswordChar = !senhaVisivel;
             txtSenha.PasswordChar = senhaVisivel ? '\0' : '*';
 
@@ -44,69 +39,28 @@ namespace CadastroPetShop
                 : Properties.Resources.fechar_o_olho;
         }
 
-        private void panel1_Paint(object? sender, PaintEventArgs e)
-        {
-            Panel? painel = sender as Panel;
-            if (painel == null) return;
-
-            int raioDoCanto = 35;
-            int diametro = raioDoCanto * 2;
-
-            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-            Rectangle retangulo = new Rectangle(0, 0, painel.Width - 1, painel.Height - 1);
-
-            using (GraphicsPath caminho = new GraphicsPath())
-            {
-                if (diametro > retangulo.Width) diametro = retangulo.Width;
-                if (diametro > retangulo.Height) diametro = retangulo.Height;
-                Size tamanhoArco = new Size(diametro, diametro);
-
-                caminho.AddArc(new Rectangle(retangulo.Location, tamanhoArco), 180, 90);
-                caminho.AddArc(new Rectangle(new Point(retangulo.Right - diametro, retangulo.Top), tamanhoArco), 270, 90);
-                caminho.AddArc(new Rectangle(new Point(retangulo.Right - diametro, retangulo.Bottom - diametro), tamanhoArco), 0, 90);
-                caminho.AddArc(new Rectangle(new Point(retangulo.Left, retangulo.Bottom - diametro), tamanhoArco), 90, 90);
-                caminho.CloseFigure();
-
-                using (SolidBrush pincelFundo = new SolidBrush(Color.White))
-                {
-                    e.Graphics.FillPath(pincelFundo, caminho);
-                }
-
-                using (Pen caneta = new Pen(Color.FromArgb(200, 200, 200), 1))
-                {
-                    e.Graphics.DrawPath(caneta, caminho);
-                }
-            }
-        }
-
         private void btn_login_Click(object? sender, EventArgs e)
         {
             string usuario = txtUsuario.Text.Trim();
             string senha = txtSenha.Text;
 
-            if (string.IsNullOrEmpty(usuario) || string.IsNullOrEmpty(senha))
+            if (string.IsNullOrWhiteSpace(usuario) || string.IsNullOrWhiteSpace(senha))
             {
-                MessageBox.Show("Informe o usuário e a senha.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Informe o usuário e a senha.", "Atenção",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            try
+            if (Autenticacao.Validar(usuario, senha))
             {
-                if (Autenticacao.Validar(usuario, senha))
-                {
-                    UsuarioAutenticado = usuario;
-                    DialogResult = DialogResult.OK;
-                    Close();
-                }
-                else
-                {
-                    MessageBox.Show("Usuário ou senha inválidos.", "Acesso Negado", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                UsuarioAutenticado = usuario;
+                DialogResult = DialogResult.OK;
+                Close();
+                return;
             }
-            catch (MySqlException ex)
-            {
-                MessageBox.Show($"Erro ao acessar o banco de dados:\n{ex.Message}", "Erro de Conexão", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+
+            MessageBox.Show("Usuário ou senha inválidos.", "Acesso Negado",
+                MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 }

@@ -118,7 +118,6 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(381, 322);
             panel1.TabIndex = 9;
-            panel1.Paint += panel1_Paint;
             // 
             // pictureBox4
             // 
@@ -132,7 +131,7 @@
             pictureBox4.TabStop = false;
             pictureBox4.Click += pictureBox4_Click;
             // 
-            // Form1
+            // FormLogin
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -142,7 +141,7 @@
             ClientSize = new Size(653, 423);
             Controls.Add(panel1);
             Icon = (Icon)resources.GetObject("$this.Icon");
-            Name = "Form1";
+            Name = "FormLogin";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Pet Ville";
             Load += Form1_Load;

@@ -196,6 +196,7 @@ namespace CadastroPetShop
             txtEmail.Size = new Size(185, 24);
             txtEmail.TabIndex = 7;
             txtEmail.Text = "automático";
+            txtEmail.TextChanged += txtEmail_TextChanged;
             // 
             // lblIdade
             // 
@@ -291,7 +292,7 @@ namespace CadastroPetShop
             // 
             pnlVacina.Controls.Add(rbVacinaSim);
             pnlVacina.Controls.Add(rbVacinaNao);
-            pnlVacina.Location = new Point(465, 107);
+            pnlVacina.Location = new Point(476, 107);
             pnlVacina.Name = "pnlVacina";
             pnlVacina.Size = new Size(140, 28);
             pnlVacina.TabIndex = 15;
@@ -523,16 +524,16 @@ namespace CadastroPetShop
             // lblPesquisa
             // 
             lblPesquisa.AutoSize = true;
-            lblPesquisa.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            lblPesquisa.Location = new Point(20, 282);
+            lblPesquisa.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblPesquisa.Location = new Point(50, 283);
             lblPesquisa.Name = "lblPesquisa";
-            lblPesquisa.Size = new Size(59, 15);
+            lblPesquisa.Size = new Size(67, 17);
             lblPesquisa.TabIndex = 31;
             lblPesquisa.Text = "Pesquisar";
             // 
             // txtPesquisa
             // 
-            txtPesquisa.Location = new Point(88, 279);
+            txtPesquisa.Location = new Point(123, 283);
             txtPesquisa.Name = "txtPesquisa";
             txtPesquisa.PlaceholderText = "PET ou dono";
             txtPesquisa.Size = new Size(220, 23);
@@ -540,7 +541,7 @@ namespace CadastroPetShop
             // 
             // btnPesquisar
             // 
-            btnPesquisar.Location = new Point(320, 277);
+            btnPesquisar.Location = new Point(349, 283);
             btnPesquisar.Name = "btnPesquisar";
             btnPesquisar.Size = new Size(90, 25);
             btnPesquisar.TabIndex = 33;
